@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.1.1 (11/15/2021)
+
+- Catching exception in brainly page parsing
+
+---
+
 ## Version 0.1.0 (11/15/2021)
 
 - Added `GET /single` to get best brainly question

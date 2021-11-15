@@ -17,9 +17,12 @@ proc filterBrainlyPages(results: seq[SearchResult]): Future[seq[Question]] {.asy
   for r in results:
     if "https://brainly." in r.url:
       if r.url.split("/").len == 5:
-        let page = await getQuestion r.url
-        if page.answers.len > 0:
-          result.add page
+        try:
+          let page = await getQuestion r.url
+          if page.answers.len > 0:
+            result.add page
+        except:
+          discard
 
 func pageScore(question: Question): int =
   ## Get the question score based in
@@ -58,7 +61,10 @@ proc searchSingle*(ctx) {.async.} =
     term = query["q"]
     results = await search term
     brainlyPage = pickBestPage await filterBrainlyPages results.results
-  resp $(%*brainlyPage)
+  if brainlyPage.url.len > 0:
+    resp $(%*brainlyPage)
+  else:
+    resp "{}"
 
 proc searchMultiple*(ctx) {.async.} =
   setBaseHeaders ctx

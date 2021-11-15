@@ -11,3 +11,4 @@ using
 func setBaseHeaders*(ctx) =
   with ctx.response:
     setHeader "Content-Type", "application/json"
+    setHeader "Access-Control-Allow-Origin", "*"
