@@ -3,7 +3,7 @@
 version       = "0.1.1"
 author        = "Luciano Lorenzo"
 description   = "Easy API to find Brainly questions using Duckduckgo"
-license       = "MIT"
+license       = "GPL-3"
 srcDir        = "src"
 
 bin = @["findbrainly"]
