@@ -8,5 +8,5 @@ This API searches in Duckduckgo and extract every brainly page to assert that qu
 
 ## Routes
 
-- [ ] `GET /single` - Send `q` param with query to get best question
-- [ ] `GET /multi` - Send `q` param with query to get all solved questions
+- [x] `GET /single` - Send `q` param with query to get best question
+- [x] `GET /multi` - Send `q` param with query to get all solved questions
