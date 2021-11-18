@@ -13,13 +13,12 @@ using
   ctx: Context
 
 proc search(term: string): Future[Search] {.async.} =
-
-  result = await duckduckgo.search "inurl:\"https://brainly.\" " & term
-  echo "Found " & $result.results.len & " brainly pages"
+  result = await duckduckgo.search term
+  echo "Found " & $result.results.len & " random pages"
   if result.results.len == 0:
-    echo "Searching in other terms"
-    result = await duckduckgo.search term
-    echo "Found " & $result.results.len & " random pages"
+    echo "Searching with filters"
+    result = await duckduckgo.search "inurl:\"https://brainly.\" " & term
+    echo "Found " & $result.results.len & " brainly pages"
 
 
 proc filterBrainlyPages(results: seq[SearchResult]): Future[seq[Question]] {.async.} =

@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.2.1 (11/18/2021)
+
+- Changed order of search fallback; first search without filter to get better results
+
+---
+
 ## Version 0.2.0 (11/17/2021)
 
 - Added duckduckgo search filter to show just Brainly sites

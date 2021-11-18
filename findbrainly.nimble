@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.2.0"
+version       = "0.2.1"
 author        = "Luciano Lorenzo"
 description   = "Easy API to find Brainly questions using Duckduckgo"
 license       = "GPL-3"
