@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 0.2.0 (11/17/2021)
+
+- Added duckduckgo search filter to show just Brainly sites
+- Added a logging in Brainly extraction
+- If filtered search didn't returned anything, the search will be remade with plain term
+
+---
+
 ## Version 0.1.1 (11/15/2021)
 
 - Catching exception in brainly page parsing
