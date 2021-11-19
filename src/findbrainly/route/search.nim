@@ -20,8 +20,8 @@ proc search(term: string): Future[Search] {.async.} =
     result = await duckduckgo.search "inurl:\"https://brainly.\" " & term
     echo "Found " & $result.results.len & " brainly pages"
 
-
-proc filterBrainlyPages(results: seq[SearchResult]): Future[seq[Question]] {.async.} =
+proc filterBrainlyPages(results: seq[SearchResult]): Future[seq[
+    Question]] {.async.} =
   ## Filters the search result to get just answered questions
   for r in results:
     if "https://brainly." in r.url:
@@ -59,32 +59,34 @@ proc pickBestPage(questions: seq[Question]): Question =
 func getQuery(ctx): Table[string, string] =
   toTable toSeq uri.decodeQuery ctx.request.url.query
 
-template errNoQuery =
-  resp $(%*{"error": "Missing `q` param"}), Http400
-
-proc searchSingle*(ctx) {.async.} =
+proc getTerm(ctx): Future[tuple[success: bool; questions: seq[Question]]] {.async.} =
+  result.success = true
   setBaseHeaders ctx
   let query = getQuery ctx
   if not query.hasKey "q":
-    errNoQuery
+    resp $(%*{"error": "Missing `q` param"}), Http400
+    result.success = false
     return
-  let
-    term = query["q"]
-    results = await search term
-    brainlyPage = pickBestPage await filterBrainlyPages results.results
+  let term = query["q"]
+  if term.len == 0:
+    resp $(%*{"error": "No search term provided"}), Http400
+    result.success = false
+    return
+  let results = await search term
+  result.questions = await filterBrainlyPages results.results
+
+proc searchSingle*(ctx) {.async.} =
+  let x = await getTerm ctx
+  if not x.success:
+    return
+  let brainlyPage = pickBestPage x.questions
   if brainlyPage.url.len > 0:
     resp $(%*brainlyPage)
   else:
     resp "{}"
 
 proc searchMultiple*(ctx) {.async.} =
-  setBaseHeaders ctx
-  let query = getQuery ctx
-  if not query.hasKey "q":
-    errNoQuery
+  let x = await getTerm ctx
+  if not x.success:
     return
-  let
-    term = query["q"]
-    results = await search term
-    brainlyPages = await filterBrainlyPages results.results
-  resp $(%*brainlyPages)
+  resp $(%*x.questions)

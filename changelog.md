@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 0.3.0 (11/19/2021)
+
+- Removed code duplication in `findbrainly/route/search`
+- Added a verification to query text length. It need to be larger than 0
+
+---
+
 ## Version 0.2.1 (11/18/2021)
 
 - Changed order of search fallback; first search without filter to get better results
